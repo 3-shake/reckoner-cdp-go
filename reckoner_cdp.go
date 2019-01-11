@@ -10,15 +10,21 @@ import (
 )
 
 const (
-	ENDPOINT = "localhost:8080"
+	defaultStreamingHost = "http://localhost:8080"
 )
 
 type Client struct {
 	accessKeyID     string
 	secretAccessKey string
-	DatabaseName    string
-	TableName       string
+	streamingHost   string
 	httpClient      *http.Client
+}
+
+type ClientSettings struct {
+	accessKeyID     string
+	secretAccessKey string
+	streamingHost   string
+	transport       http.RoundTripper
 }
 
 func (client *Client) signature(req *http.Request) string {
@@ -33,10 +39,10 @@ func (client *Client) signature(req *http.Request) string {
 	return base64Str
 }
 
-func (client *Client) get(path string, params url.Values) (*http.Response, error) {
+func (client *Client) streamingGet(path string, params url.Values) (*http.Response, error) {
 	requestURL := (&url.URL{
 		Scheme:   "http",
-		Host:     ENDPOINT,
+		Host:     client.streamingHost,
 		Path:     path,
 		RawQuery: params.Encode(),
 	}).String()
@@ -58,13 +64,19 @@ func (client *Client) get(path string, params url.Values) (*http.Response, error
 	return res, nil
 }
 
-func NewClient(accessKeyID, secretAccessKey, databaseName, tableName string) *Client {
-	httpClient := &http.Client{}
+func NewClient(settings ClientSettings) *Client {
+	httpClient := &http.Client{
+		Transport: settings.transport,
+	}
+	streamingHost := settings.streamingHost
+	if streamingHost == "" {
+		streamingHost = defaultStreamingHost
+	}
+
 	return &Client{
-		accessKeyID:     accessKeyID,
-		secretAccessKey: secretAccessKey,
-		DatabaseName:    databaseName,
-		TableName:       tableName,
+		accessKeyID:     settings.accessKeyID,
+		secretAccessKey: settings.secretAccessKey,
 		httpClient:      httpClient,
+		streamingHost:   streamingHost,
 	}
 }

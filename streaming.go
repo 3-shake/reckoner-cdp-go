@@ -6,10 +6,10 @@ import (
 	"github.com/vmihailenco/msgpack"
 )
 
-func (client *Client) Insert(src interface{}) error {
+func (client *Client) Insert(src interface{}, databaseName, tableName string) error {
 	values := url.Values{}
-	values.Add("destination_database", client.DatabaseName)
-	values.Add("destination_table", client.TableName)
+	values.Add("destination_database", databaseName)
+	values.Add("destination_table", tableName)
 
 	b, err := msgpack.Marshal([]interface{}{src})
 	if err != nil {
@@ -17,7 +17,7 @@ func (client *Client) Insert(src interface{}) error {
 	}
 	values.Add("data", string(b))
 
-	res, err := client.get("/api/v1/streaming", values)
+	res, err := client.streamingGet("/api/v1/streaming", values)
 	defer res.Body.Close()
 	if err != nil {
 		return err
@@ -29,10 +29,10 @@ func (client *Client) Insert(src interface{}) error {
 	return nil
 }
 
-func (client *Client) BulkInsert(src []interface{}) error {
+func (client *Client) BulkInsert(src []interface{}, databaseName, tableName string) error {
 	values := url.Values{}
-	values.Add("destination_database", client.DatabaseName)
-	values.Add("destination_table", client.TableName)
+	values.Add("destination_database", databaseName)
+	values.Add("destination_table", tableName)
 
 	b, err := msgpack.Marshal(&src)
 	if err != nil {
@@ -40,7 +40,7 @@ func (client *Client) BulkInsert(src []interface{}) error {
 	}
 	values.Add("data", string(b))
 
-	res, err := client.get("/api/v1/streaming", values)
+	res, err := client.streamingGet("/api/v1/streaming", values)
 	defer res.Body.Close()
 	if err != nil {
 		return err

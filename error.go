@@ -13,8 +13,9 @@ const (
 )
 
 type ReckonerCdpError struct {
-	Type    string
-	Message string
+	Type     string
+	Message  string
+	Response *http.Response
 }
 
 func (e *ReckonerCdpError) Error() string {
@@ -38,7 +39,8 @@ func (client *Client) createError(res *http.Response, message string) error {
 	}
 
 	return &ReckonerCdpError{
-		Type:    errorType,
-		Message: message,
+		Type:     errorType,
+		Message:  message,
+		Response: res,
 	}
 }
