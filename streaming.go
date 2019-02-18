@@ -18,10 +18,10 @@ func (client *Client) Insert(src interface{}, databaseName, tableName string) er
 	values.Add("data", string(b))
 
 	res, err := client.streamingGet("/api/v1/streaming", values)
-	defer res.Body.Close()
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 	if res.StatusCode/100 != 2 {
 		return client.createError(res, "Insert failed")
 	}
@@ -41,10 +41,10 @@ func (client *Client) BulkInsert(src []interface{}, databaseName, tableName stri
 	values.Add("data", string(b))
 
 	res, err := client.streamingGet("/api/v1/streaming", values)
-	defer res.Body.Close()
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 	if res.StatusCode/100 != 2 {
 		return client.createError(res, "Bulk Insert failed")
 	}

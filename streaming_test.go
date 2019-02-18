@@ -19,8 +19,8 @@ func TestInsertError(t *testing.T) {
 	))
 	defer ts.Close()
 
-	client := NewClient(ClientSettings{
-		streamingHost: ts.URL[7:len(ts.URL)],
+	client := NewClient(&ClientSettings{
+		StreamingHost: ts.URL[7:len(ts.URL)],
 	})
 	if err := client.Insert(
 		&Item{bar: "bar", foo: "foo"},
@@ -38,8 +38,8 @@ func TestBulkInsertError(t *testing.T) {
 	))
 	defer ts.Close()
 
-	client := NewClient(ClientSettings{
-		streamingHost: ts.URL[7:len(ts.URL)],
+	client := NewClient(&ClientSettings{
+		StreamingHost: ts.URL[7:len(ts.URL)],
 	})
 	if err := client.BulkInsert(
 		[]interface{}{&Item{bar: "bar", foo: "foo"}},
