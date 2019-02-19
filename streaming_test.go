@@ -7,8 +7,8 @@ import (
 )
 
 type Item struct {
-	bar string
-	foo string
+	Bar string
+	Foo string
 }
 
 func TestInsertError(t *testing.T) {
@@ -23,7 +23,7 @@ func TestInsertError(t *testing.T) {
 		StreamingHost: ts.URL[7:len(ts.URL)],
 	})
 	if err := client.Insert(
-		&Item{bar: "bar", foo: "foo"},
+		&Item{Bar: "bar", Foo: "foo"},
 		"test_db",
 		"test_table"); err == nil {
 		t.Fatalf("Client#Insert raise error when response status is not 200.")
@@ -42,7 +42,7 @@ func TestBulkInsertError(t *testing.T) {
 		StreamingHost: ts.URL[7:len(ts.URL)],
 	})
 	if err := client.BulkInsert(
-		[]interface{}{&Item{bar: "bar", foo: "foo"}},
+		[]interface{}{&Item{Bar: "bar", Foo: "foo"}},
 		"test_db",
 		"test_table"); err == nil {
 		t.Fatalf("Client#BulkInsert raise error when response status is not 200.")
