@@ -3,12 +3,10 @@ package reckonercdp
 import (
 	"net/url"
 
-	"log"
-
 	"github.com/vmihailenco/msgpack"
 )
 
-func (client *Client) Insert(src interface{}, databaseName, tableName string) error {
+func (client *Client) Insert(databaseName, tableName string, src interface{}) error {
 	values := url.Values{}
 	values.Add("destination_database", databaseName)
 	values.Add("destination_table", tableName)
@@ -18,8 +16,6 @@ func (client *Client) Insert(src interface{}, databaseName, tableName string) er
 		return err
 	}
 	values.Add("data", string(b))
-
-	log.Println(b)
 
 	res, err := client.streamingGet("/api/v1/streaming", values)
 	if err != nil {
@@ -33,7 +29,7 @@ func (client *Client) Insert(src interface{}, databaseName, tableName string) er
 	return nil
 }
 
-func (client *Client) BulkInsert(src []interface{}, databaseName, tableName string) error {
+func (client *Client) BulkInsert(databaseName, tableName string, src ...interface{}) error {
 	values := url.Values{}
 	values.Add("destination_database", databaseName)
 	values.Add("destination_table", tableName)
