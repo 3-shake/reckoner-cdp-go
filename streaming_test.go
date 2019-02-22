@@ -23,9 +23,10 @@ func TestInsertError(t *testing.T) {
 		StreamingHost: ts.URL[7:len(ts.URL)],
 	})
 	if err := client.Insert(
-		&Item{Bar: "bar", Foo: "foo"},
 		"test_db",
-		"test_table"); err == nil {
+		"test_table",
+		&Item{Bar: "bar", Foo: "foo"},
+	); err == nil {
 		t.Fatalf("Client#Insert raise error when response status is not 200.")
 	}
 }
@@ -42,9 +43,10 @@ func TestBulkInsertError(t *testing.T) {
 		StreamingHost: ts.URL[7:len(ts.URL)],
 	})
 	if err := client.BulkInsert(
-		[]interface{}{&Item{Bar: "bar", Foo: "foo"}},
 		"test_db",
-		"test_table"); err == nil {
+		"test_table",
+		[]interface{}{&Item{Bar: "bar", Foo: "foo"}},
+	); err == nil {
 		t.Fatalf("Client#BulkInsert raise error when response status is not 200.")
 	}
 }
