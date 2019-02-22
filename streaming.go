@@ -6,13 +6,16 @@ import (
 	"reflect"
 
 	"github.com/pkg/errors"
+	"github.com/rs/xid"
 	"github.com/vmihailenco/msgpack"
 )
 
 func (client *Client) Insert(databaseName, tableName string, src interface{}) error {
+	guid := xid.New()
 	values := url.Values{}
 	values.Add("destination_database", databaseName)
 	values.Add("destination_table", tableName)
+	values.Add("record_id", guid.String())
 
 	srcVal := reflect.ValueOf(src)
 	if srcVal.Kind() == reflect.Slice {
@@ -38,9 +41,11 @@ func (client *Client) Insert(databaseName, tableName string, src interface{}) er
 }
 
 func (client *Client) BulkInsert(databaseName, tableName string, src interface{}) error {
+	guid := xid.New()
 	values := url.Values{}
 	values.Add("destination_database", databaseName)
 	values.Add("destination_table", tableName)
+	values.Add("record_id", guid.String())
 
 	srcVal := reflect.ValueOf(src)
 	switch srcVal.Kind() {
