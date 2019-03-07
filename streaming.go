@@ -19,7 +19,7 @@ func (client *Client) Insert(databaseName, tableName string, src interface{}) er
 
 	srcVal := reflect.ValueOf(src)
 	if srcVal.Kind() == reflect.Slice {
-		return errors.New("src is not Slice")
+		return errors.New("src is not a Struct")
 	}
 
 	b, err := msgpack.Marshal([]interface{}{src})
