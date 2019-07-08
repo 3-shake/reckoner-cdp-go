@@ -76,7 +76,7 @@ you stream your data to on reckoner CDP. you can create database and table from 
 ### Query
 
 ```go
-res, err := client.Query("SELECT * FROM `database_name`.`table_name` LIMIT 1")
+res, err := client.Query("SELECT * FROM `team.database_name`.`table_name` LIMIT 1")
 if err != nil {
 	fmt.Println(err)
 	return
