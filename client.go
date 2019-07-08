@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	defaultHost            = "localhost:8888"
+	defaultHost            = "localhost:8880"
 	defaultStreamingHost   = "localhost:8080"
 	defaultScheme          = "http"
 	defaultStreamingScheme = "http"
